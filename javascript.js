@@ -25,7 +25,13 @@ function operate(operator, x, y){
         break;
         case "*": result = x * y;
         break;
-        case "/": result = x / y;
+        case "/": 
+            if (y === 0) {
+                result = "Cannot divide by zero!"; 
+                dividedByZero = true;
+                break;}
+            result = x / y;
+            result = result.toFixed(10);   
         break;
     }
     return result;
@@ -41,6 +47,7 @@ function evaluate(displayValue){
     return operate(operator, x, y);
 }
 
+let dividedByZero = false;
 
 let display = document.querySelector("#display");
 display.innerText = [];
@@ -52,6 +59,10 @@ const operatorKeys = document.querySelectorAll(".operator-key");
 operatorKeys.forEach((key) => {
 
     key.addEventListener('click', ()=> {
+        if (dividedByZero === true){
+            display.innerText = "";
+            dividedByZero = false;
+        }
         let operators = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
         if (operators.test(display.innerText)){
             display.innerText = evaluate(display.innerText);
@@ -67,6 +78,10 @@ const numKeys = document.querySelectorAll(".num-key");
 numKeys.forEach((key) => {
 
         key.addEventListener('click', ()=> {
+            if (dividedByZero === true){
+                display.innerText = "";
+                dividedByZero = false;
+            }
             let currentState = `${display.innerText}`;
             currentState += key.innerText;
             display.innerText = currentState;
