@@ -28,3 +28,26 @@ function operate(operator, x, y){
     }
     return result;
 }
+
+let display = document.querySelector("#display");
+display.innerText = [];
+
+const operatorKeys = document.querySelectorAll(".operator-key");
+let space = " ";
+
+operatorKeys.forEach((key) => {
+
+    key.addEventListener('click', ()=> {
+        display.innerText += ` ${key.innerText} `;
+    });
+});
+
+const numKeys = document.querySelectorAll(".num-key");
+
+numKeys.forEach((key) => {
+
+        key.addEventListener('click', ()=> {
+            display.innerText += key.innerText;
+        });
+});
+
