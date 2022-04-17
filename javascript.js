@@ -128,3 +128,11 @@ equals.addEventListener('click', ()=> {
     display.innerText = evaluate(display.innerText);
 });
 
+const deleteKey = document.querySelector("#delete");
+
+deleteKey.addEventListener('click', ()=>{
+    let textString = `${display.innerText}`;
+    let slicedString = textString.slice(0,-1);
+    display.innerText = slicedString;
+});
+
