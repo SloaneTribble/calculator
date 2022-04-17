@@ -15,8 +15,8 @@ function divide(x ,y) {
 }
 
 function operate(operator, x, y){
-    x = parseInt(x);
-    y = parseInt(y);
+    x = parseFloat(x);
+    y = parseFloat(y);
     let result = 0;
     switch(operator){
         case "+": result = x + y;
@@ -39,12 +39,16 @@ function operate(operator, x, y){
 
 function evaluate(displayValue){
     let operation = displayValue;
-    let opArray = operation.match(/[^\d()]+|[\d.]+/g);
+    let regex = /[+-\?\*]/;
+    let opArray = operation.replace(/^-|([+\-*/])-/g, "$1#")
+        .split(/([+\-*/])/)
+        .map(e => e.replace("#", "-"));
     let x = opArray[0];
     let operator = opArray[1];
     let y = opArray[2];
 
-    return operate(operator, x, y);
+    let result = operate(operator, x, y);
+    return result;
 }
 
 let dividedByZero = false;
@@ -63,7 +67,7 @@ operatorKeys.forEach((key) => {
             display.innerText = "";
             dividedByZero = false;
         }
-        let operators = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
+        let operators = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,<>\/?~]/;
         if (operators.test(display.innerText)){
             display.innerText = evaluate(display.innerText);
         }
@@ -71,6 +75,27 @@ operatorKeys.forEach((key) => {
         currentState += `${key.innerText}`;
         display.innerText = currentState;
     });
+});
+
+const decimalKey = document.querySelector("#decimal");
+
+decimalKey.addEventListener('click', ()=> {
+    let operation = display.innerText;
+    let regex = /[+-\?\*]/;
+    let opArray = operation.replace(/^-|([+\-*/])-/g, "$1#")
+        .split(/([+\-*/])/)
+        .map(e => e.replace("#", "-"));
+    let x = opArray[0];
+    let operator = opArray[1];
+    let y = opArray[2];
+    let decimal = /[\.]/;
+
+    switch(true){
+        case decimal.test(x) && !y: return;
+        break;
+        case decimal.test(y): return;
+    }
+    display.innerText += decimalKey.innerText;
 });
 
 const numKeys = document.querySelectorAll(".num-key");
@@ -97,6 +122,9 @@ clear.addEventListener('click', ()=> {
 const equals = document.querySelector("#equals");
 
 equals.addEventListener('click', ()=> {
+    let operators = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,<>\/?~]/;
+        if (!operators.test(display.innerText)){
+            return;}
     display.innerText = evaluate(display.innerText);
 });
 
