@@ -29,6 +29,7 @@ function operate(operator, x, y){
     return result;
 }
 
+
 let display = document.querySelector("#display");
 display.innerText = [];
 
@@ -38,7 +39,9 @@ let space = " ";
 operatorKeys.forEach((key) => {
 
     key.addEventListener('click', ()=> {
-        display.innerText += ` ${key.innerText} `;
+        let currentState = display.innerText;
+        currentState += " " + key.innerText + " ";
+        display.innerText = currentState;
     });
 });
 
@@ -50,4 +53,11 @@ numKeys.forEach((key) => {
             display.innerText += key.innerText;
         });
 });
+
+const clear = document.querySelector("#clear");
+
+clear.addEventListener('click', ()=> {
+    display.innerText = "";
+})
+
 
