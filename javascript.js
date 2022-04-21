@@ -253,10 +253,17 @@ function handler(key) {
         let operators = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,<>\/?~]/;
         if (!operators.test(display.innerText)){
             return;}
-        x = operate(operator, x, y);
+        display.innerText = operate(operator, x, y);
+        if(dividedByZero === true){
+            x = "Cannot divide by zero!";
+            y = "";
+            operator = "";
+            break;
+        }
+        x = display.innerText;
         y = "";
         operator = "";
-        display.innerText = x + operator + y;
+        break;
 
     case "Backspace":
         switch(true){
@@ -266,11 +273,12 @@ function handler(key) {
             case (y === "" && operator !== ""):
                 operator = "";
                 break;
-            case (x.length === 1 && operator === ""):
+            case (x.length === 0 && operator === ""):
                 x = "0";
                 break;
             case (x !== "0" && operator === ""):
                 x = x.slice(0, -1);
+                if (x === ""){x = "0";}
                 break;
             default:
                 x = "0";
@@ -280,7 +288,7 @@ function handler(key) {
         break;
         
     default:
-        display.innerText += '';
+        display.innerText += '0';
         break;
   }
 
@@ -295,12 +303,14 @@ function handler(key) {
 
 
   if(isOperator){
-      
-        if (operator !== ""){
+        if(operator !== "" && y === ""){input = "";}
+
+        if (operator !== "" && y !== ""){
         display.innerText = operate(operator, x, y);
         x = display.innerText;
-        operator = "";
+        operator = input;
         y = "";
+        display.innerText = x + operator + y;
         } else {
         operator = input;
         display.innerText = x + operator + y;
