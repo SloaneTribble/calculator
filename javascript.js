@@ -60,8 +60,9 @@ const operatorKeys = document.querySelectorAll(".operator-key");
 operatorKeys.forEach((key) => {
 
     key.addEventListener('click', ()=> {
+        if (operator == null){operator = ""};
         if (dividedByZero === true){
-            x = "";
+            x = "0";
             y = "";
             operator = "";
             display.innerText = x + operator + y;
@@ -128,14 +129,7 @@ decimalKey.addEventListener('click', ()=> {
 
 });
 
-const clear = document.querySelector("#clear");
 
-clear.addEventListener('click', ()=> {
-    x = "0";
-    operator = "";
-    y = "";
-    display.innerText = x + operator + y;
-});
 
 const equals = document.querySelector("#equals");
 
@@ -163,12 +157,36 @@ invertSign.addEventListener('click', ()=> {
     display.innerText = x + operator + y;
 });
 
+const clear = document.querySelector("#clear");
+
+clear.addEventListener('click', ()=> {
+    x = "0";
+    operator = "";
+    y = "";
+    display.innerText = x + operator + y;
+});
+
 const deleteKey = document.querySelector("#delete");
 
 deleteKey.addEventListener('click', ()=>{
-    let textString = `${display.innerText}`;
-    let slicedString = textString.slice(0,-1);
-    display.innerText = slicedString;
+    switch(true){
+        case (y !== ""): 
+            y = y.slice(0,-1);
+            break;
+        case (y === "" && operator !== ""):
+            operator = "";
+            break;
+        case (x.length === 1 && operator === ""):
+            x = "0";
+            break;
+        case (x !== "0" && operator === ""):
+            x = x.slice(0, -1);
+            break;
+        default:
+            x = "0";
+            break;
+    }
+    display.innerText = x + operator + y;    
 });
 
 let input = document.querySelector('input');
@@ -231,7 +249,7 @@ function handler(key) {
         input = "/";
         isOperator = true;
         break;
-    case '=':
+    case 'Enter':
         let operators = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,<>\/?~]/;
         if (!operators.test(display.innerText)){
             return;}
@@ -241,9 +259,24 @@ function handler(key) {
         display.innerText = x + operator + y;
 
     case "Backspace":
-        let textString = `${display.innerText}`;
-        let slicedString = textString.slice(0,-1);
-        display.innerText = slicedString;
+        switch(true){
+            case (y !== ""): 
+                y = y.slice(0,-1);
+                break;
+            case (y === "" && operator !== ""):
+                operator = "";
+                break;
+            case (x.length === 1 && operator === ""):
+                x = "0";
+                break;
+            case (x !== "0" && operator === ""):
+                x = x.slice(0, -1);
+                break;
+            default:
+                x = "0";
+                break;
+        }
+        display.innerText = x + operator + y;   
         break;
         
     default:
