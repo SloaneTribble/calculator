@@ -36,31 +36,15 @@ function operate(operator, x, y){
             result = result.toFixed(10);   
         break;
     }
-    x = "";
-    y = "";
-    operator = "";
-    return result;
-}
-
-function evaluate(operator, x, y){
-    // let operation = displayValue;
-    // let regex = /[+-\?\*]/;
-    // let opArray = operation.replace(/^-|([+\-*/])-/g, "$1#")
-    //     .split(/([+\-*/])/)
-    //     .map(e => e.replace("#", "-"));
-    // let x = opArray[0];
-    // let operator = opArray[1];
-    // let y = opArray[2];
-
-    
-
-    let result = operate(operator, x, y);
-    return result;
+    // x = result;
+    // y = "";
+    // operator = "";
+    return result.toString();
 }
 
 let dividedByZero = false;
 
-let x = "";
+let x = "0";
 
 let y = "";
 
@@ -85,7 +69,7 @@ operatorKeys.forEach((key) => {
         }
         // let operators = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,<>\/?~]/; 
         if (operator !== ""){
-            display.innerText = evaluate(operator, x, y);
+            display.innerText = operate(operator, x, y);
             x = display.innerText;
             operator = "";
             y = "";
@@ -95,13 +79,15 @@ operatorKeys.forEach((key) => {
     });
 });
 
+
+
 const numKeys = document.querySelectorAll(".num-key");
 
 numKeys.forEach((key) => {
 
     key.addEventListener('click', ()=> {
         if (dividedByZero === true){
-            x = "";
+            x = "0";
             y = "";
             operator = "";
             display.innerText = "";
@@ -111,8 +97,14 @@ numKeys.forEach((key) => {
             y += key.innerText; // add a digit to the right side of the expression
             display.innerText += key.innerText;
         } else {
-            x += key.innerText; // add operator to left side of expression
-            display.innerText += key.innerText;
+            if(x === "0"){
+                x = key.innerText;
+                display.innerText = key.innerText;
+            }else{
+                x += key.innerText; // add operator to left side of expression
+                display.innerText += key.innerText;
+            }
+            
         }
     });
 });
@@ -139,7 +131,7 @@ decimalKey.addEventListener('click', ()=> {
 const clear = document.querySelector("#clear");
 
 clear.addEventListener('click', ()=> {
-    x = "";
+    x = "0";
     operator = "";
     y = "";
     display.innerText = x + operator + y;
@@ -151,14 +143,18 @@ equals.addEventListener('click', ()=> {
     let operators = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,<>\/?~]/;
         if (!operators.test(display.innerText)){
             return;}
-    display.innerText = operate(operator, x, y);
+    x = operate(operator, x, y);
+    y = "";
+    operator = "";
+    display.innerText = x + operator + y;
+
 });
 
 const invertSign = document.querySelector("#invert-sign");
 
 invertSign.addEventListener('click', ()=> {
     switch(true){
-        case x !== 0 && operator === "": x *= (-1);
+        case x !== "0" && operator === "": x *= (-1);
         break;
         case operator !== "" && y !== 0: y *= (-1);
         break;
@@ -175,5 +171,121 @@ deleteKey.addEventListener('click', ()=>{
     display.innerText = slicedString;
 });
 
+let input = document.querySelector('input');
 
+
+window.addEventListener('keydown', e => {
+	handler(e.key);
+});
+
+function handler(key) {
+    let input = "";
+    let isOperator = false;
+	switch(key) {
+    case '1':
+        input = "1";
+        break;
+    case '2':
+        input = "2";
+        break;
+    case '3':
+        input = "3";
+        break;
+    case '4':
+        input = "4";
+        break;
+    case '5':
+        input = "5";
+        break;
+    case '6':
+        input = "6";
+        break;
+    case '7':
+        input = "7";
+        break;
+    case '8':
+        input = "8";
+        break;
+    case '9':
+        input = "9";
+        break;
+    case '0':
+        input = "0";
+        break;
+    case '+':
+        input = "+";
+        isOperator = true;
+        break;
+    case '-':
+        display.innerText += '-';
+        input = "-";
+        isOperator = true;
+        break;
+    case '*':
+        display.innerText += "*";
+        input = "*";
+        isOperator = true;
+        break;
+    case '/':
+        display.innerText += '/';
+        input = "/";
+        isOperator = true;
+        break;
+    case '=':
+        let operators = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,<>\/?~]/;
+        if (!operators.test(display.innerText)){
+            return;}
+        x = operate(operator, x, y);
+        y = "";
+        operator = "";
+        display.innerText = x + operator + y;
+
+    case "Backspace":
+        let textString = `${display.innerText}`;
+        let slicedString = textString.slice(0,-1);
+        display.innerText = slicedString;
+        break;
+        
+    default:
+        display.innerText += '';
+        break;
+  }
+
+
+  if (dividedByZero === true){
+    x = "0";
+    y = "";
+    operator = "";
+    display.innerText = "";
+    dividedByZero = false;
+}
+
+
+  if(isOperator){
+      
+        if (operator !== ""){
+        display.innerText = operate(operator, x, y);
+        x = display.innerText;
+        operator = "";
+        y = "";
+        } else {
+        operator = input;
+        display.innerText = x + operator + y;
+        }
+    } else {
+        
+        if(operator !== ""){ // if an operator is present
+            y += input; // add a digit to the right side of the expression
+            display.innerText += input;
+        } else {
+            if(x === "0"){
+                x = input;
+                display.innerText = input;
+            }else{
+                x += input; // add operator to left side of expression
+                display.innerText += input;
+            } 
+        }
+    }
+}
 
