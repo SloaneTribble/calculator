@@ -1,9 +1,43 @@
+body{
+    display: flex;
+    flex-direction: column;
+}
+
+#calculator-body{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color:aqua;
+    height: 600px;
+    width: 400px;
+}
+
 #display{
+    text-justify: center;
+    margin: 16px;
+    padding-left: 8px;
+    font-size: 32px;
     width: 320px;
-    height: 32px;
+    height: 48px;
     background-color: bisque;
 }
 
+#operator-container{
+    margin: 16px;
+}
+
+#number-container{
+    margin: 16px;
+}
+
+.num-key{
+    font-size: 64px;
+}
+
 button{
-    margin: 4px;
+    cursor: pointer;
+    background-color: linear-gradient(30deg, blue, white);
+    border-radius: 8px;
+    font-size: 32px;
+    margin: 3px;
 }

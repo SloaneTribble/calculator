@@ -40,6 +40,7 @@ const operatorKeys = document.querySelectorAll(".operator-key");
 operatorKeys.forEach((key) => {
 
     key.addEventListener('click', ()=> {
+        if (operator !== "" && y === ""){return;}
         // if (operator == null){operator = ""}; // Pretty sure this is unnecessary
         if (dividedByZero === true){
             x = "0"; // reset display
@@ -52,7 +53,7 @@ operatorKeys.forEach((key) => {
         // ^^^ Older version used regex to split the string in display into
         // three components -- seemed to be more error prone
 
-        if (operator !== ""){ // if an operator is present
+        if (operator !== "" && y !== ""){ // if an operator is present
             display.innerText = operate(operator, x, y); //perform the current operation
             x = display.innerText;
             operator = "";
