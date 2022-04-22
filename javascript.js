@@ -245,7 +245,6 @@ function handler(key) {
     display.innerText = x + operator + y;
     return;
        
-    case 'Enter':
     case '=':
         if(operator === "" || operator !== "" && y === "" || x === "." || y === "."){
             return;
