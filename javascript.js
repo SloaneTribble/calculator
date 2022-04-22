@@ -11,11 +11,11 @@ function operate(operator, x, y){
         break;
         case "/": 
             if (y === 0) {
-                result = "Cannot divide by zero!"; 
+                result = "Nice try!"; 
                 dividedByZero = true;
                 break;}
             result = x / y;
-            result = result.toFixed(10);   
+            result = result.toFixed(8);   
         break;
     }
 
@@ -40,6 +40,8 @@ const operatorKeys = document.querySelectorAll(".operator-key");
 operatorKeys.forEach((key) => {
 
     key.addEventListener('click', ()=> {
+        if(display.innerText.length > 16){return;}
+
         if (operator !== "" && y === ""){return;}
         // if (operator == null){operator = ""}; // Pretty sure this is unnecessary
         if (dividedByZero === true){
@@ -71,6 +73,8 @@ const numKeys = document.querySelectorAll(".num-key");
 numKeys.forEach((key) => {
 
     key.addEventListener('click', ()=> {
+        if(display.innerText.length > 16){return;}
+
         if (dividedByZero === true){
             x = "0";
             y = "";
@@ -143,7 +147,7 @@ invertSign.addEventListener('click', ()=> {
         break;
         default: break;
     }
-    display.innerText = x + operator + y;
+    display.innerText = x.toString() + operator + y.toString();
 });
 
 const clear = document.querySelector("#clear");
@@ -186,6 +190,10 @@ window.addEventListener('keydown', e => {
 });
 
 function handler(key) {
+    let input = "";
+    let isOperator = false;
+    let backSpace = false;
+
     if(dividedByZero === true){
         x = "0";
         y = "";
@@ -194,8 +202,7 @@ function handler(key) {
         dividedByZero = false;
         return;
     }
-    let input = "";
-    let isOperator = false;
+    
 	switch(key) {
     case '1':
     case '2':
@@ -219,6 +226,7 @@ function handler(key) {
         break;
 
     case '.':
+        if(display.innerText.length > 16){return;}
         let parsedX = parseFloat(x);
         let parsedY = parseFloat(y);
         switch(true){
@@ -243,7 +251,7 @@ function handler(key) {
             return;
         }
 
-        display.innerText = operate(operator, x, y);
+        display.innerText = operate(operator, x, y).toString();
         if(dividedByZero === true){
             x = "Cannot divide by zero!";
             y = "";
@@ -257,6 +265,9 @@ function handler(key) {
     break;
 
     case "Backspace":
+        backSpace = true;
+        x = x.toString();
+        y = y.toString();
         switch(true){
             case (y !== ""): 
                 y = y.slice(0,-1);
@@ -276,7 +287,6 @@ function handler(key) {
                 break;
         }
         display.innerText = x + operator + y;  
-        return; 
         break;
 
     case "Shift":
@@ -297,6 +307,7 @@ function handler(key) {
     dividedByZero = false;
 }
 
+if(display.innerText.length > 16 || backSpace === true){return;}//prevent overflowing display;
 
   if(isOperator){
         if(operator !== "" && y === ""){input = "";}

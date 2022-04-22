@@ -1,43 +1,105 @@
+html{
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
 body{
+    
     display: flex;
     flex-direction: column;
 }
 
 #calculator-body{
     display: flex;
+    flex: 1;
     flex-direction: column;
     align-items: center;
-    background-color:aqua;
-    height: 600px;
-    width: 400px;
+    border: 10px solid;
+    border-image-slice: 1;
+    border-width: 5px;
+    border-image-source: linear-gradient(to left, #743ad5, #d53a9d);
+    background: linear-gradient(65deg, black, white);
+    height: 800px;
+    width: 600px;
 }
 
 #display{
+    background: linear-gradient(
+        to bottom,
+        rgb(1, 170, 153),
+        rgb(195, 255, 225),
+        rgb(28, 231, 214)
+      );
+
+    border: 10px solid;
+    border-image-slice: 1;
+    border-width: 5px;
+    border-image-source: linear-gradient(to left, #743ad5, #d53a9d);
     text-justify: center;
     margin: 16px;
     padding-left: 8px;
-    font-size: 32px;
-    width: 320px;
-    height: 48px;
-    background-color: bisque;
+    font-size: 52px;
+    width: 500px;
+    height: 64px;
 }
 
 #operator-container{
+    display:flex;
+    flex: 1;
     margin: 16px;
 }
 
+.operator-key{
+    font-size: 52px;
+}
+
 #number-container{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    flex: 1;
     margin: 16px;
 }
 
 .num-key{
-    font-size: 64px;
+    font-size: 88px;
+    flex-grow: 2;
 }
 
-button{
-    cursor: pointer;
-    background-color: linear-gradient(30deg, blue, white);
-    border-radius: 8px;
-    font-size: 32px;
-    margin: 3px;
+#delete, #clear{
+    flex-grow: 1;
 }
+
+button {
+    font-size: 64px;
+    margin: 2px;
+    position: relative;
+    z-index: 1; /* matters! */
+    background: linear-gradient(
+      to bottom,
+      rgb(255, 244, 182),
+      orange
+    );
+  }
+
+  button::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      to bottom,
+      orangered,
+      purple
+    );
+    opacity: 0;
+    transition: opacity 0.2s;
+    z-index: -1;
+  }
+  button:hover::before {
+    opacity: 1;
+  }
+
+
+
