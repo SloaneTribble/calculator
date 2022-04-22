@@ -1,20 +1,3 @@
-
-function add(x ,y) {
-    return x + y;
-}
-
-function subtract(x ,y) {
-    return x - y;
-}
-
-function multiply(x ,y) {
-    return x * y;
-}
-
-function divide(x ,y) {
-    return x / y;
-}
-
 function operate(operator, x, y){
     x = parseFloat(x);
     y = parseFloat(y);
@@ -35,9 +18,7 @@ function operate(operator, x, y){
             result = result.toFixed(10);   
         break;
     }
-    // x = result;
-    // y = "";
-    // operator = "";
+
     return result.toString();
 }
 
@@ -59,17 +40,20 @@ const operatorKeys = document.querySelectorAll(".operator-key");
 operatorKeys.forEach((key) => {
 
     key.addEventListener('click', ()=> {
-        if (operator == null){operator = ""};
+        // if (operator == null){operator = ""}; // Pretty sure this is unnecessary
         if (dividedByZero === true){
-            x = "0";
+            x = "0"; // reset display
             y = "";
             operator = "";
             display.innerText = x + operator + y;
             dividedByZero = false;
         }
         // let operators = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,<>\/?~]/; 
-        if (operator !== ""){
-            display.innerText = operate(operator, x, y);
+        // ^^^ Older version used regex to split the string in display into
+        // three components -- seemed to be more error prone
+
+        if (operator !== ""){ // if an operator is present
+            display.innerText = operate(operator, x, y); //perform the current operation
             x = display.innerText;
             operator = "";
             y = "";
@@ -97,11 +81,11 @@ numKeys.forEach((key) => {
             y += key.innerText; // add a digit to the right side of the expression
             display.innerText += key.innerText;
         } else {
-            if(x === "0"){
-                x = key.innerText;
+            if(x === "0"){ // prevents a digit from being concatenated to 0
+                x = key.innerText; 
                 display.innerText = key.innerText;
             }else{
-                x += key.innerText; // add operator to left side of expression
+                x += key.innerText; // add a digit to left side of expression
                 display.innerText += key.innerText;
             }
             
@@ -115,11 +99,16 @@ decimalKey.addEventListener('click', ()=> {
     let parsedX = parseFloat(x);
     let parsedY = parseFloat(y);
     switch(true){
-        case y === "" && parsedX % 1 === 0: 
-            x += decimalKey.innerText;
+    //if x is an integer, and no operator or right operand are present
+        case y === "" && operator === "" && parsedX % 1 === 0: 
+            x += decimalKey.innerText; // add a decimal point to x
             break;
-        case operator !== "" && parsedY % 1 === 0: 
-            y += decimalKey.innerText;
+    //if y is not present but there is an operator
+        case y === "" && operator !== "":
+            y += decimalKey.innerText; //place a decimal point in front of future operand
+            break;
+        case operator !== "" && parsedY % 1 === 0: //
+            y += decimalKey.innerText; 
             break;
         default:
             break;
@@ -133,9 +122,9 @@ decimalKey.addEventListener('click', ()=> {
 const equals = document.querySelector("#equals");
 
 equals.addEventListener('click', ()=> {
-    let operators = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,<>\/?~]/;
-        if (!operators.test(display.innerText)){
-            return;}
+    if(operator === "" || operator !== "" && y === "" || x === "." || y === "."){
+        return;
+    }
     x = operate(operator, x, y);
     y = "";
     operator = "";
@@ -232,13 +221,16 @@ function handler(key) {
         let parsedX = parseFloat(x);
         let parsedY = parseFloat(y);
         switch(true){
-            case y === "" && parsedX % 1 === 0: 
-                x += key;
-                break;
-            case operator !== "" && parsedY % 1 === 0: 
-                y += key;
-                break;
-            default:
+            case y === "" && operator === "" && parsedX % 1 === 0: 
+            x += decimalKey.innerText; // add a decimal point to x
+            break;
+        case y === "" && operator !== "":
+            y += decimalKey.innerText;
+            break;
+        case operator !== "" && parsedY % 1 === 0: //
+            y += decimalKey.innerText; 
+            break;
+        default:
             break;
         }
     display.innerText = x + operator + y;
@@ -246,10 +238,10 @@ function handler(key) {
        
     case 'Enter':
     case '=':
-        if(operator !== "" && y === ""){return;}
-        let operators = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,<>\/?~]/;
-        if (!operators.test(display.innerText)){
-            return;}
+        if(operator === "" || operator !== "" && y === "" || x === "." || y === "."){
+            return;
+        }
+
         display.innerText = operate(operator, x, y);
         if(dividedByZero === true){
             x = "Cannot divide by zero!";
