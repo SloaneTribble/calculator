@@ -1,4 +1,3 @@
-// BRANCH!!!
 
 function add(x ,y) {
     return x + y;
@@ -209,56 +208,45 @@ function handler(key) {
     let isOperator = false;
 	switch(key) {
     case '1':
-        input = "1";
-        break;
     case '2':
-        input = "2";
-        break;
     case '3':
-        input = "3";
-        break;
     case '4':
-        input = "4";
-        break;
     case '5':
-        input = "5";
-        break;
-    case '6':
-        input = "6";
-        break;
+    case '6': 
     case '7':
-        input = "7";
-        break;
     case '8':
-        input = "8";
-        break;
     case '9':
-        input = "9";
-        break;
     case '0':
-        input = "0";
+        input = key;
         break;
+     
     case '+':
-        input = "+";
-        isOperator = true;
-        break;
     case '-':
-        display.innerText += '-';
-        input = "-";
-        isOperator = true;
-        break;
     case '*':
-        display.innerText += "*";
-        input = "*";
-        isOperator = true;
-        break;
     case '/':
-        display.innerText += '/';
-        input = "/";
+        input = key;
         isOperator = true;
         break;
+
+    case '.':
+        let parsedX = parseFloat(x);
+        let parsedY = parseFloat(y);
+        switch(true){
+            case y === "" && parsedX % 1 === 0: 
+                x += key;
+                break;
+            case operator !== "" && parsedY % 1 === 0: 
+                y += key;
+                break;
+            default:
+            break;
+        }
+    display.innerText = x + operator + y;
+    return;
+       
     case 'Enter':
     case '=':
+        if(operator !== "" && y === ""){return;}
         let operators = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,<>\/?~]/;
         if (!operators.test(display.innerText)){
             return;}
@@ -268,12 +256,12 @@ function handler(key) {
             y = "";
             operator = "";
             return;
-            break;
         }
         x = display.innerText;
         y = "";
         operator = "";
-        break;
+        return;
+    break;
 
     case "Backspace":
         switch(true){
@@ -321,14 +309,14 @@ function handler(key) {
         if(operator !== "" && y === ""){input = "";}
 
         if (operator !== "" && y !== ""){
-        display.innerText = operate(operator, x, y);
-        x = display.innerText;
-        operator = input;
-        y = "";
-        display.innerText = x + operator + y;
+            display.innerText = operate(operator, x, y);
+            x = display.innerText;
+            operator = input;
+            y = "";
+            display.innerText = x + operator + y;
         } else {
-        operator = input;
-        display.innerText = x + operator + y;
+            operator = input;
+            display.innerText = x + operator + y;
         }
     } else {
         
