@@ -261,7 +261,6 @@ function handler(key) {
         x = display.innerText;
         y = "";
         operator = "";
-        return;
     break;
 
     case "Backspace":
