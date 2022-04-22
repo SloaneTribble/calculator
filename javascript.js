@@ -197,6 +197,14 @@ window.addEventListener('keydown', e => {
 });
 
 function handler(key) {
+    if(dividedByZero === true){
+        x = "0";
+        y = "";
+        operator = "";
+        display.innerText = x + operator + y;
+        dividedByZero = false;
+        return;
+    }
     let input = "";
     let isOperator = false;
 	switch(key) {
@@ -250,6 +258,7 @@ function handler(key) {
         isOperator = true;
         break;
     case 'Enter':
+    case '=':
         let operators = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,<>\/?~]/;
         if (!operators.test(display.innerText)){
             return;}
@@ -258,6 +267,7 @@ function handler(key) {
             x = "Cannot divide by zero!";
             y = "";
             operator = "";
+            return;
             break;
         }
         x = display.innerText;
@@ -284,11 +294,16 @@ function handler(key) {
                 x = "0";
                 break;
         }
-        display.innerText = x + operator + y;   
+        display.innerText = x + operator + y;  
+        return; 
+        break;
+
+    case "Shift":
+        return;
         break;
         
     default:
-        display.innerText += '0';
+        return;
         break;
   }
 
