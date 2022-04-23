@@ -15,11 +15,13 @@ function operate(operator, x, y){
                 dividedByZero = true;
                 break;}
             result = x / y;
-            result = result.toFixed(8);   
+            result = result.toFixed(8);
+            result = result.toString();
+            if(result.length > 14){result = result.slice(0, 16);} 
         break;
     }
 
-    return result.toString();
+    return result;
 }
 
 let dividedByZero = false;
@@ -230,13 +232,13 @@ function handler(key) {
         let parsedX = parseFloat(x);
         let parsedY = parseFloat(y);
         switch(true){
-            case y === "" && operator === "" && parsedX % 1 === 0: 
+            case y === "" && operator === "" && parsedX % 1 === 0 && !x.includes("."): 
             x += decimalKey.innerText; // add a decimal point to x
             break;
         case y === "" && operator !== "":
             y += decimalKey.innerText;
             break;
-        case operator !== "" && parsedY % 1 === 0: //
+        case operator !== "" && parsedY % 1 === 0 && !y.includes("."): //
             y += decimalKey.innerText; 
             break;
         default:
@@ -260,6 +262,7 @@ function handler(key) {
         x = display.innerText;
         y = "";
         operator = "";
+        return;
     break;
 
     case "Backspace":
