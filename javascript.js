@@ -107,14 +107,14 @@ decimalKey.addEventListener('click', ()=> {
     let parsedY = parseFloat(y);
     switch(true){
     //if x is an integer, and no operator or right operand are present
-        case y === "" && operator === "" && parsedX % 1 === 0: 
+        case y === "" && operator === "" && parsedX % 1 === 0 && !x.includes("."): 
             x += decimalKey.innerText; // add a decimal point to x
             break;
     //if y is not present but there is an operator
         case y === "" && operator !== "":
             y += decimalKey.innerText; //place a decimal point in front of future operand
             break;
-        case operator !== "" && parsedY % 1 === 0: //
+        case operator !== "" && parsedY % 1 === 0 && !y.includes("."): //
             y += decimalKey.innerText; 
             break;
         default:
