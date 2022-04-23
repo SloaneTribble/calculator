@@ -17,7 +17,7 @@ function operate(operator, x, y){
             result = x / y;
             result = result.toFixed(8);
             result = result.toString();
-            if(result.length > 14){result = result.slice(0, 16);} 
+            if(result.length > 14){result = result.slice(0, 14);} 
         break;
     }
 
